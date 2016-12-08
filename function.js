@@ -1,11 +1,15 @@
 var TogglClient = require('toggl-api');
-var toggl = new TogglClient({apiToken: '<replace>'});
+var AWS = require('aws-sdk');
+var apiKey = process.env.API_KEY;  
+var toggl = new TogglClient({apiToken: apiKey});
+
 
 exports.handleStart = function(event, context, callback) {
+	var projectID = process.env.PROJECT_ID;   
 	toggl.startTimeEntry({
 		description: 'Timer started with dash',
 		billable:    false,
-		pid: 26629023
+		pid: parseInt(projectID)
 	}, function(err, timeEntry) {
 		if (err) {
 			console.log("Error: " + err);
